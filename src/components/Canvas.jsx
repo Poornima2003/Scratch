@@ -9,14 +9,13 @@ const Canvas = ({ onActionSelect }) => {
   const [blocks, setBlocks] = useState([]);
   const [selectedBlocks, setSelectedBlocks] = useState(new Set());
 
-  // Function to execute actions for the selected sprite
+  
   const handleExecuteActions = (actions) => {
-    if (!selectedSprite || actions.length === 0) return; // Exit if no sprite is selected or no actions available
-
+    if (!selectedSprite || actions.length === 0) return; 
     const newPositions = { ...positions };
     const newRotations = { ...rotations };
 
-    // Initialize position and rotation for the selected sprite if not already present
+    
     if (!newPositions[selectedSprite]) {
       newPositions[selectedSprite] = { x: 0, y: 0 };
     }
@@ -34,15 +33,15 @@ const Canvas = ({ onActionSelect }) => {
           newRotations[selectedSprite] += 15;
           break;
 
-        // Handling 'Go to x:10 to y:40'
+        
         default:
           if (action.startsWith('Go to x:')) {
-            const regex = /Go to x:(-?\d+)\s*to\s*y[:=](-?\d+)/; // Regular expression to capture x and y values with 'to' format
-            const match = action.match(regex); // Match the action string with the regex
+            const regex = /Go to x:(-?\d+)\s*to\s*y[:=](-?\d+)/; 
+            const match = action.match(regex); 
             if (match) {
-              const [, x, y] = match; // Extract x and y from the match result
-              newPositions[selectedSprite].x = parseInt(x, 10); // Set the x position
-              newPositions[selectedSprite].y = parseInt(y, 10); // Set the y position
+              const [, x, y] = match; 
+              newPositions[selectedSprite].x = parseInt(x, 10); 
+              newPositions[selectedSprite].y = parseInt(y, 10); 
             } else {
               console.error('Failed to parse the "Go to" action:', action);
             }
@@ -57,7 +56,7 @@ const Canvas = ({ onActionSelect }) => {
     setRotations(newRotations);
   };
 
-  // Handle block drop
+  
   const handleDrop = (event) => {
     event.preventDefault();
     const action = event.dataTransfer.getData('text/plain');
@@ -69,28 +68,28 @@ const Canvas = ({ onActionSelect }) => {
     event.preventDefault();
   };
 
-  // Handle block click (select or deselect)
+  
   const handleBlockClick = (block) => {
     const newSelectedBlocks = new Set(selectedBlocks);
 
     if (newSelectedBlocks.has(block)) {
-      newSelectedBlocks.delete(block); // Deselect if already selected
+      newSelectedBlocks.delete(block); 
     } else {
-      newSelectedBlocks.add(block); // Select block
+      newSelectedBlocks.add(block); 
     }
 
     setSelectedBlocks(newSelectedBlocks);
   };
 
-  // Handle block deletion
+  
   const handleDelete = (block) => {
-    setBlocks((prevBlocks) => prevBlocks.filter((b) => b !== block)); // Remove the block
+    setBlocks((prevBlocks) => prevBlocks.filter((b) => b !== block)); 
     const newSelectedBlocks = new Set(selectedBlocks);
-    newSelectedBlocks.delete(block); // Deselect if it was selected
+    newSelectedBlocks.delete(block); 
     setSelectedBlocks(newSelectedBlocks);
   };
 
-  // Execute the selected blocks
+  
   const executeActions = () => {
     const groupedActions = Array.from(selectedBlocks);
     if (groupedActions.length > 0) {
